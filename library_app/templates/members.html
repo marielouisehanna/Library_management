@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="stylesheet" type="text/css" href="/static/style.css">
+    <title>Library Members</title>
+</head>
+<body>
+    <h1>Library Members</h1>
+    <a href="/add_member" class="button">Add New Member</a>
+    <table>
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Contact Information</th>
+                <th>Membership Date</th>
+                <th>Member Type</th>
+                <th>Max Books Allowed</th>
+                <th>Max Duration Allowed</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for member in members %}
+            <tr>
+                <td>{{ member['Name'] }}</td>
+                <td>{{ member['ContactInformation'] }}</td>
+                <td>{{ member['MembershipDate'] }}</td>
+                <td>{{ member['MemberType'] }}</td>
+                <td>{{ member['MaxBooksAllowed'] }}</td>
+                <td>{{ member['MaxDurationAllowed'] }}</td>
+                <td>
+                    <a href="/edit_member/{{ member['MemberID'] }}" class="button">Edit</a>
+                    <form action="/delete_member/{{ member['MemberID'] }}" method="post" style="display:inline;">
+                        <button type="submit">Delete</button>
+                    </form>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</body>
+</html>

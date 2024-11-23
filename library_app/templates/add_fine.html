@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+
+{% block title %}Add Fine{% endblock %}
+
+{% block content %}
+<h2>Add New Fine</h2>
+<form method="POST">
+    <label for="transaction_id">Transaction ID:</label>
+    <input type="number" name="transaction_id" required><br>
+    <label for="amount">Amount:</label>
+    <input type="number" name="amount" required><br>
+    <label for="payment_status">Payment Status:</label>
+    <select name="payment_status">
+        <option value="Paid">Paid</option>
+        <option value="Unpaid">Unpaid</option>
+    </select><br>
+    <label for="fine_date">Fine Date:</label>
+    <input type="date" name="fine_date" required><br>
+    <button type="submit">Add Fine</button>
+</form>
+{% endblock %}

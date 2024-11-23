@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+
+{% block title %}Manage Fines{% endblock %}
+
+{% block content %}
+<h2>Manage Fines</h2>
+<a href="/add_fine" class="button">Add Fine</a>
+<table>
+    <thead>
+        <tr>
+            <th>Fine ID</th>
+            <th>Transaction ID</th>
+            <th>Amount</th>
+            <th>Payment Status</th>
+            <th>Fine Date</th>
+            <th>Is Overdue</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for fine in fines %}
+        <tr>
+            <td>{{ fine['FineID'] }}</td>
+            <td>{{ fine['TransactionID'] }}</td>
+            <td>{{ fine['Amount'] }}</td>
+            <td>{{ fine['PaymentStatus'] }}</td>
+            <td>{{ fine['FineDate'] }}</td>
+            <td>{{ 'Yes' if fine['IsOverdue'] else 'No' }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

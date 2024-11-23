@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+
+{% block title %}Manage Transactions{% endblock %}
+
+{% block content %}
+<h2>Manage Transactions</h2>
+<a href="/add_transaction" class="button">Add New Transaction</a>
+<table>
+    <thead>
+        <tr>
+            <th>Transaction ID</th>
+            <th>Member ID</th>
+            <th>Book ID</th>
+            <th>Borrow Date</th>
+            <th>Return Date</th>
+            <th>Duration</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for transaction in transactions %}
+        <tr>
+            <td>{{ transaction['TransactionID'] }}</td>
+            <td>{{ transaction['MemberID'] }}</td>
+            <td>{{ transaction['BookID'] }}</td>
+            <td>{{ transaction['BorrowDate'] }}</td>
+            <td>{{ transaction['ReturnDate'] }}</td>
+            <td>{{ transaction['Duration'] }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

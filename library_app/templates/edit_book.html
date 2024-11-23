@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="stylesheet" type="text/css" href="/static/style.css">
+    <title>Edit Book</title>
+</head>
+<body>
+    <h1>Edit Book</h1>
+    <form method="POST">
+        <label for="isbn">ISBN:</label>
+        <input type="text" name="isbn" value="{{ book['ISBN'] }}" required><br>
+        <label for="title">Title:</label>
+        <input type="text" name="title" value="{{ book['Title'] }}" required><br>
+        <label for="author">Author:</label>
+        <input type="text" name="author" value="{{ book['Author'] }}" required><br>
+        <label for="genre">Genre:</label>
+        <input type="text" name="genre" value="{{ book['Genre'] }}" required><br>
+        <label for="availability">Availability:</label>
+        <select name="availability">
+            <option value="Available" {% if book['AvailabilityStatus'] == 'Available' %}selected{% endif %}>Available</option>
+            <option value="Issued" {% if book['AvailabilityStatus'] == 'Issued' %}selected{% endif %}>Issued</option>
+        </select><br>
+        <button type="submit">Update Book</button>
+    </form>
+</body>
+</html>

@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+
+{% block title %}Library Home{% endblock %}
+
+{% block content %}
+<div class="welcome-section">
+    <h2>Welcome to the Library Management System</h2>
+</div>
+
+<div class="search-section">
+    <form action="/search_books" method="POST" class="search-form">
+        <input type="text" name="query" placeholder="Search books by title, author, or genre" required>
+        <button type="submit" class="button">Search</button>
+    </form>
+</div>
+
+<!-- <div class="quick-links">
+    <h3>Quick Links</h3>
+    <ul>
+        <li><a href="/librarians" class="button">Manage Librarians</a></li>
+        <li><a href="/books" class="button">Manage Books</a></li>
+        <li><a href="/members" class="button">Manage Members</a></li>
+        <li><a href="/transactions" class="button">Manage Transactions</a></li>
+        <li><a href="/fines" class="button">Manage Fines</a></li>
+        <li><a href="/available_books" class="button">Available Books</a></li>
+    </ul>
+</div> -->
+{% endblock %}

@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+
+{% block title %}Manage Librarians{% endblock %}
+
+{% block content %}
+<h2>Manage Librarians</h2>
+<a href="/add_librarian" class="button">Add New Librarian</a>
+<table>
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Contact Information</th>
+            <th>Hire Date</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for librarian in librarians %}
+        <tr>
+            <td>{{ librarian['Name'] }}</td>
+            <td>{{ librarian['ContactInformation'] }}</td>
+            <td>{{ librarian['HireDate'] }}</td>
+            <td>
+                <div class="action-buttons">
+                    <a href="/edit_librarian/{{ librarian['LibrarianID'] }}" class="button">Edit</a>
+                    <form action="/delete_librarian/{{ librarian['LibrarianID'] }}" method="post" style="display:inline;">
+                        <button type="submit" class="button danger">Delete</button>
+                    </form>
+                </div>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

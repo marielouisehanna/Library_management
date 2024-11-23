@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="stylesheet" type="text/css" href="/static/style.css">
+    <title>Library Books</title>
+</head>
+<body>
+    <h1>Library Books</h1>
+    <a href="/add_book" class="button">Add New Book</a>
+    <table>
+        <thead>
+            <tr>
+                <th>ISBN</th>
+                <th>Title</th>
+                <th>Author</th>
+                <th>Genre</th>
+                <th>Availability</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for book in books %}
+            <tr>
+                <td>{{ book['ISBN'] }}</td>
+                <td>{{ book['Title'] }}</td>
+                <td>{{ book['Author'] }}</td>
+                <td>{{ book['Genre'] }}</td>
+                <td>{{ book['AvailabilityStatus'] }}</td>
+                <td>
+                    <a href="/edit_book/{{ book['BookID'] }}" class="button">Edit</a>
+                    <form action="/delete_book/{{ book['BookID'] }}" method="post" style="display:inline;">
+                        <button type="submit">Delete</button>
+                    </form>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</body>
+</html>
