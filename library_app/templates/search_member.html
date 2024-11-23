@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+
+{% block title %}Search Member{% endblock %}
+
+{% block content %}
+<h2>Search for a Member</h2>
+<form method="POST" class="search-form">
+    <input type="text" name="member_name" placeholder="Enter member's name" required>
+    <button type="submit" class="button">Search</button>
+</form>
+
+{% if member_info %}
+<h3>Member Information</h3>
+<ul>
+    <li><strong>Name:</strong> {{ member_info['Name'] }}</li>
+    <li><strong>Contact Information:</strong> {{ member_info['ContactInformation'] }}</li>
+    <li><strong>Membership Type:</strong> {{ member_info['MemberType'] }}</li>
+    <li><strong>Max Books Allowed:</strong> {{ member_info['MaxBooksAllowed'] }}</li>
+    <li><strong>Max Duration Allowed:</strong> {{ member_info['MaxDurationAllowed'] }} days</li>
+</ul>
+
+{% if borrowed_books %}
+<h3>Borrowed Books</h3>
+<ul>
+    {% for book in borrowed_books %}
+    <li>
+        <strong>Title:</strong> {{ book['Title'] }}<br>
+        <strong>Author:</strong> {{ book['Author'] }}<br>
+        <strong>Borrowed On:</strong> {{ book['BorrowDate'] }}<br>
+    </li>
+    {% endfor %}
+</ul>
+{% else %}
+<p>No books currently borrowed.</p>
+{% endif %}
+
+
+{% else %}
+    {% if request.method == 'POST' %}
+        <p>No member found with that name.</p>
+    {% endif %}
+{% endif %}
+{% endblock %}

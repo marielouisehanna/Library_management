@@ -84,6 +84,27 @@ INSERT INTO Members (Name, ContactInformation, MembershipDate, MemberType, MaxBo
 ('Luke Anderson', 'luke.anderson@example.com', '2022-04-20', 'Premium', 10, 60),
 ('Olivia Thomas', 'olivia.thomas@example.com', '2020-12-25', 'Regular', 5, 30);
 
+INSERT INTO Books (ISBN, Title, Author, Genre, AvailabilityStatus) VALUES
+('978-1250776090', 'It Ends with Us', 'Colleen Hoover', 'Romance', 'Available'),
+('978-1524763169', 'Becoming', 'Michelle Obama', 'Biography', 'Issued'),
+('978-1250857553', 'Tomorrow, and Tomorrow, and Tomorrow', 'Gabrielle Zevin', 'Fiction', 'Available'),
+('978-0063204157', 'Verity', 'Colleen Hoover', 'Thriller', 'Available'),
+('978-1501171345', 'Ugly Love', 'Colleen Hoover', 'Romance', 'Issued'),
+('978-1982149483', 'A Man Called Ove', 'Fredrik Backman', 'Fiction', 'Available'),
+('978-0063068923', 'Reminders of Him', 'Colleen Hoover', 'Romance', 'Available'),
+('978-1250810917', 'The Seven Husbands of Evelyn Hugo', 'Taylor Jenkins Reid', 'Historical Fiction', 'Available'),
+('978-0593189574', 'Malibu Rising', 'Taylor Jenkins Reid', 'Fiction', 'Issued'),
+('978-0062969801', 'Book Lovers', 'Emily Henry', 'Romance', 'Available'),
+('978-0316393874', 'Fourth Wing', 'Rebecca Yarros', 'Fantasy', 'Available'),
+('978-0593329825', 'The Paris Library', 'Janet Skeslien Charles', 'Historical Fiction', 'Issued'),
+('978-1501170621', 'Daisy Jones & The Six', 'Taylor Jenkins Reid', 'Fiction', 'Available'),
+('978-0593421918', 'The Last House on Needless Street', 'Catriona Ward', 'Thriller', 'Available'),
+('978-0593419090', 'The Love Hypothesis', 'Ali Hazelwood', 'Romance', 'Available'),
+('978-0316499345', 'Project Hail Mary', 'Andy Weir', 'Science Fiction', 'Issued'),
+('978-0593203629', 'Where the Crawdads Sing', 'Delia Owens', 'Mystery', 'Available'),
+('978-1501171803', 'People We Meet on Vacation', 'Emily Henry', 'Romance', 'Available'),
+('978-1524763161', 'The Midnight Library', 'Matt Haig', 'Fiction', 'Available'),
+('978-0525559474', 'A Court of Thorns and Roses', 'Sarah J. Maas', 'Fantasy', 'Issued');
 
 -- Insert data into Transactions table
 INSERT INTO Transactions (MemberID, BookID, BorrowDate, ReturnDate, Duration) VALUES

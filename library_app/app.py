@@ -220,6 +220,53 @@ def search_books():
         conn.close()
     return render_template('search_books.html', books=books, query=query)
 
+@app.route('/search_member', methods=['GET', 'POST'])
+def search_member():
+    member_info = None
+    borrowed_books = []
+    total_fines = 0
+
+    if request.method == 'POST':
+        member_name = request.form.get('member_name').strip()
+        conn = get_db_connection()
+        
+        # Get member information
+        member_info = conn.execute(
+            "SELECT * FROM Members WHERE Name LIKE ?", (f'%{member_name}%',)
+        ).fetchone()
+
+        if member_info:
+            # Get borrowed books
+            borrowed_books = conn.execute("""
+                SELECT Books.Title, Books.Author, Transactions.BorrowDate
+                FROM Transactions
+                JOIN Books ON Transactions.BookID = Books.BookID
+                WHERE Transactions.MemberID = ? AND Transactions.ReturnDate IS NULL
+            """, (member_info['MemberID'],)).fetchall()
+
+            # Calculate total fines
+            fines = conn.execute("""
+                SELECT SUM(Amount) AS TotalFines
+                FROM Fines
+                WHERE TransactionID IN (
+                    SELECT TransactionID
+                    FROM Transactions
+                    WHERE MemberID = ?
+                )
+            """, (member_info['MemberID'],)).fetchone()
+
+
+        conn.close()
+
+    return render_template(
+        'search_member.html',
+        member_info=member_info,
+        borrowed_books=borrowed_books,
+        total_fines=total_fines
+    )
+
+
+
 # Display Available Books
 @app.route('/available_books')
 def available_books():
