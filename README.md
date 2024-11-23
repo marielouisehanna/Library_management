@@ -91,18 +91,6 @@ library_app/
 ├── library.db             # SQLite database
 └── README.md              # Project documentation
 ```
-
----
-
-
-### 🎬  Homepage:
-![Homepage](https://via.placeholder.com/1200x400)  
-*An elegant red-and-black theme with quick links to all features.*
-
-### 🔍 Search Member:
-![Search Member](https://via.placeholder.com/1200x400)  
-*Search for a member and get details like borrowed books and fines.*
-
 ---
 
 💡 *"Libraries store the energy that fuels the imagination."* 📖
