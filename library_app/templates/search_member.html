@@ -5,7 +5,7 @@
 {% block content %}
 <h2>Search for a Member</h2>
 <form method="POST" class="search-form">
-    <input type="text" name="member_name" placeholder="Enter member's name" required>
+    <input type="text" name="search_query" placeholder="Enter member's name or ID" required>
     <button type="submit" class="button">Search</button>
 </form>
 
@@ -34,10 +34,9 @@
 <p>No books currently borrowed.</p>
 {% endif %}
 
-
 {% else %}
     {% if request.method == 'POST' %}
-        <p>No member found with that name.</p>
+        <p>No member found with that name or ID.</p>
     {% endif %}
 {% endif %}
 {% endblock %}

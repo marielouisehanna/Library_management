@@ -227,13 +227,19 @@ def search_member():
     total_fines = 0
 
     if request.method == 'POST':
-        member_name = request.form.get('member_name').strip()
+        search_query = request.form.get('search_query', '').strip()
         conn = get_db_connection()
-        
-        # Get member information
-        member_info = conn.execute(
-            "SELECT * FROM Members WHERE Name LIKE ?", (f'%{member_name}%',)
-        ).fetchone()
+
+        if search_query.isdigit():
+            # Search by MemberID (if the query is numeric)
+            member_info = conn.execute(
+                "SELECT * FROM Members WHERE MemberID = ?", (search_query,)
+            ).fetchone()
+        else:
+            # Search by Name (if the query is text)
+            member_info = conn.execute(
+                "SELECT * FROM Members WHERE Name LIKE ?", (f'%{search_query}%',)
+            ).fetchone()
 
         if member_info:
             # Get borrowed books
@@ -255,6 +261,7 @@ def search_member():
                 )
             """, (member_info['MemberID'],)).fetchone()
 
+            total_fines = fines['TotalFines'] if fines and fines['TotalFines'] else 0
 
         conn.close()
 
@@ -264,7 +271,6 @@ def search_member():
         borrowed_books=borrowed_books,
         total_fines=total_fines
     )
-
 
 
 # Display Available Books
