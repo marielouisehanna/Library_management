@@ -84,23 +84,66 @@ def add_book():
         return redirect(url_for('books'))
     return render_template('add_book.html')
 
+from datetime import datetime
+
 @app.route('/edit_book/<int:id>', methods=('GET', 'POST'))
 def edit_book(id):
     conn = get_db_connection()
-    book = conn.execute('SELECT * FROM Books WHERE BookID = ?', (id,)).fetchone()
+    book = conn.execute("SELECT * FROM Books WHERE BookID = ?", (id,)).fetchone()
+
     if request.method == 'POST':
         isbn = request.form['isbn']
         title = request.form['title']
         author = request.form['author']
         genre = request.form['genre']
         availability = request.form['availability']
-        conn.execute('UPDATE Books SET ISBN = ?, Title = ?, Author = ?, Genre = ?, AvailabilityStatus = ? WHERE BookID = ?',
-                     (isbn, title, author, genre, availability, id))
+        member_id = request.form.get('member_id', '').strip()  # Optional field
+
+        # Update book details
+        if availability == 'Issued' and member_id:
+            # Ensure MemberID exists
+            member = conn.execute("SELECT * FROM Members WHERE MemberID = ?", (member_id,)).fetchone()
+            if not member:
+                conn.close()
+                return "Error: Member ID does not exist.", 400
+
+            # Update the book's availability and issue details
+            issue_date = datetime.now().strftime('%Y-%m-%d')
+            conn.execute("""
+                UPDATE Books
+                SET ISBN = ?, Title = ?, Author = ?, Genre = ?, AvailabilityStatus = ?, IssuedTo = ?, IssueDate = ?
+                WHERE BookID = ?
+            """, (isbn, title, author, genre, availability, member_id, issue_date, id))
+
+            # Create a new transaction for the issued book
+            conn.execute("""
+                INSERT INTO Transactions (MemberID, BookID, BorrowDate, Duration)
+                VALUES (?, ?, ?, ?)
+            """, (member_id, id, issue_date, 30))
+
+        elif availability == 'Available':
+            # Clear IssuedTo and IssueDate if the book is set to "Available"
+            conn.execute("""
+                UPDATE Books
+                SET ISBN = ?, Title = ?, Author = ?, Genre = ?, AvailabilityStatus = ?, IssuedTo = NULL, IssueDate = NULL
+                WHERE BookID = ?
+            """, (isbn, title, author, genre, availability, id))
+        
+        else:
+            # Just update book details without assigning it
+            conn.execute("""
+                UPDATE Books
+                SET ISBN = ?, Title = ?, Author = ?, Genre = ?, AvailabilityStatus = ?
+                WHERE BookID = ?
+            """, (isbn, title, author, genre, availability, id))
+
         conn.commit()
         conn.close()
         return redirect(url_for('books'))
+
     conn.close()
     return render_template('edit_book.html', book=book)
+
 
 @app.route('/delete_book/<int:id>', methods=('POST',))
 def delete_book(id):
