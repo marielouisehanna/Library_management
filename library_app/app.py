@@ -267,6 +267,7 @@ def search_books():
 def search_member():
     member_info = None
     borrowed_books = []
+    fines_details = []
     total_fines = 0
 
     if request.method == 'POST':
@@ -285,12 +286,23 @@ def search_member():
             ).fetchone()
 
         if member_info:
-            # Get borrowed books
+            # Get borrowed books with due dates
             borrowed_books = conn.execute("""
-                SELECT Books.Title, Books.Author, Transactions.BorrowDate
+                SELECT Books.Title, Books.Author, Transactions.BorrowDate, 
+                       date(Transactions.BorrowDate, '+' || Transactions.Duration || ' days') AS DueDate
                 FROM Transactions
                 JOIN Books ON Transactions.BookID = Books.BookID
                 WHERE Transactions.MemberID = ? AND Transactions.ReturnDate IS NULL
+            """, (member_info['MemberID'],)).fetchall()
+
+            # Get details of all fines
+            fines_details = conn.execute("""
+                SELECT Fines.TransactionID, Fines.Amount, Fines.PaymentStatus, Fines.FineDate, 
+                       Transactions.BorrowDate, Transactions.Duration,
+                       date(Transactions.BorrowDate, '+' || Transactions.Duration || ' days') AS DueDate
+                FROM Fines
+                JOIN Transactions ON Fines.TransactionID = Transactions.TransactionID
+                WHERE Transactions.MemberID = ?
             """, (member_info['MemberID'],)).fetchall()
 
             # Calculate total fines
@@ -312,9 +324,9 @@ def search_member():
         'search_member.html',
         member_info=member_info,
         borrowed_books=borrowed_books,
+        fines_details=fines_details,
         total_fines=total_fines
     )
-
 
 # Display Available Books
 @app.route('/available_books')

@@ -21,17 +21,65 @@
 
 {% if borrowed_books %}
 <h3>Borrowed Books</h3>
-<ul>
-    {% for book in borrowed_books %}
-    <li>
-        <strong>Title:</strong> {{ book['Title'] }}<br>
-        <strong>Author:</strong> {{ book['Author'] }}<br>
-        <strong>Borrowed On:</strong> {{ book['BorrowDate'] }}<br>
-    </li>
-    {% endfor %}
-</ul>
+<table>
+    <thead>
+        <tr>
+            <th>Title</th>
+            <th>Author</th>
+            <th>Borrowed On</th>
+            <th>Due Date</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for book in borrowed_books %}
+        <tr>
+            <td>{{ book['Title'] }}</td>
+            <td>{{ book['Author'] }}</td>
+            <td>{{ book['BorrowDate'] }}</td>
+            <td>{{ book['DueDate'] }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
 {% else %}
 <p>No books currently borrowed.</p>
+{% endif %}
+
+{% if fines_details %}
+<h3>Fines</h3>
+<table>
+    <thead>
+        <tr>
+            <th>Transaction ID</th>
+            <th>Amount</th>
+            <th>Payment Status</th>
+            <th>Fine Date</th>
+            <th>Due Date</th>
+            <th>Overdue Status</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for fine in fines_details %}
+        <tr>
+            <td>{{ fine['TransactionID'] }}</td>
+            <td>${{ fine['Amount'] }}</td>
+            <td>{{ fine['PaymentStatus'] }}</td>
+            <td>{{ fine['FineDate'] }}</td>
+            <td>{{ fine['DueDate'] }}</td>
+            <td>
+                {% if fine['FineDate'] > fine['DueDate'] %}
+                    Overdue
+                {% else %}
+                    On Time
+                {% endif %}
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+<p><strong>Total Fines:</strong> ${{ total_fines }}</p>
+{% else %}
+<p>No fines for this member.</p>
 {% endif %}
 
 {% else %}
