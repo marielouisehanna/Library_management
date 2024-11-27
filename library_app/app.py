@@ -8,6 +8,13 @@ def get_db_connection():
     conn = sqlite3.connect('library.db')
     conn.row_factory = sqlite3.Row
     return conn
+@app.route('/pay_fine/<int:fine_id>', methods=['POST'])
+def pay_fine(fine_id):
+    conn = get_db_connection()
+    conn.execute('UPDATE Fines SET PaymentStatus = "Paid" WHERE FineID = ?', (fine_id,))
+    conn.commit()
+    conn.close()
+    return redirect(url_for('fines'))
 
 # Home route
 @app.route('/')

@@ -14,6 +14,7 @@
             <th>Payment Status</th>
             <th>Fine Date</th>
             <th>Is Overdue</th>
+            <th>Actions</th>
         </tr>
     </thead>
     <tbody>
@@ -25,6 +26,15 @@
             <td>{{ fine['PaymentStatus'] }}</td>
             <td>{{ fine['FineDate'] }}</td>
             <td>{{ 'Yes' if fine['IsOverdue'] else 'No' }}</td>
+            <td>
+                {% if fine['PaymentStatus'] != 'Paid' %}
+                <form action="/pay_fine/{{ fine['FineID'] }}" method="post" style="display:inline;">
+                    <button type="submit" class="button">Pay Fine</button>
+                </form>
+                {% else %}
+                <span>Paid</span>
+                {% endif %}
+            </td>
         </tr>
         {% endfor %}
     </tbody>
